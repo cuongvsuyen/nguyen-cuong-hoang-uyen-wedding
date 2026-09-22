@@ -40,6 +40,7 @@ function setupRsvpSheet() {
   ss.setSpreadsheetTimeZone(RSVP_CONFIG.timezone);
   ensureRsvpSheet_(ss);
   ensureSummarySheet_(ss);
+  updateSummary_(ss);
 
   SpreadsheetApp.flush();
   return `Đã cấu hình RSVP cho: ${ss.getName()}`;
@@ -149,6 +150,7 @@ function doPost(e) {
 
     sheet.getRange(rowNumber, 2, 1, 2).setNumberFormat('dd/MM/yyyy HH:mm:ss');
     sheet.getRange(rowNumber, 8).setNumberFormat('0');
+    updateSummary_(ss);
     SpreadsheetApp.flush();
 
     return htmlResult_({ ok: true, id, updated: Boolean(existingId), row: rowNumber, requestId: clean_(p.requestId, 160) });
@@ -209,15 +211,18 @@ function ensureSummarySheet_(ss) {
   let sheet = ss.getSheetByName(RSVP_CONFIG.summarySheetName);
   if (!sheet) sheet = ss.insertSheet(RSVP_CONFIG.summarySheetName, 0);
 
+  // Không dùng công thức COUNTIF trong setValues vì dấu phân cách công thức
+  // phụ thuộc locale của Google Sheet (Việt Nam dùng ';', US thường dùng ',').
+  // Giá trị tổng hợp được tính bằng Apps Script để chạy ổn định với mọi locale.
   const values = [
     ['TỔNG HỢP RSVP', 'Giá trị'],
-    ['Tổng phản hồi', `=COUNTA('${RSVP_CONFIG.sheetName}'!A2:A)`],
-    ['Số phản hồi tham dự', `=COUNTIF('${RSVP_CONFIG.sheetName}'!G2:G,"Có tham dự")`],
-    ['Số phản hồi không tham dự', `=COUNTIF('${RSVP_CONFIG.sheetName}'!G2:G,"Không tham dự")`],
-    ['Tổng số khách dự kiến', `=SUM('${RSVP_CONFIG.sheetName}'!H2:H)`],
-    ['Khách nhà trai / chú rể', `=COUNTIF('${RSVP_CONFIG.sheetName}'!F2:F,"Nhà trai / Chú rể")`],
-    ['Khách nhà gái / cô dâu', `=COUNTIF('${RSVP_CONFIG.sheetName}'!F2:F,"Nhà gái / Cô dâu")`],
-    ['Bạn chung của hai bạn', `=COUNTIF('${RSVP_CONFIG.sheetName}'!F2:F,"Bạn chung của hai bạn")`]
+    ['Tổng phản hồi', 0],
+    ['Số phản hồi tham dự', 0],
+    ['Số phản hồi không tham dự', 0],
+    ['Tổng số khách dự kiến', 0],
+    ['Khách nhà trai / chú rể', 0],
+    ['Khách nhà gái / cô dâu', 0],
+    ['Bạn chung của hai bạn', 0]
   ];
 
   sheet.getRange(1, 1, values.length, 2).setValues(values);
@@ -230,6 +235,52 @@ function ensureSummarySheet_(ss) {
   sheet.setColumnWidth(2, 150);
   sheet.setFrozenRows(1);
   return sheet;
+}
+
+function updateSummary_(ss) {
+  const rsvp = ensureRsvpSheet_(ss);
+  const summary = ss.getSheetByName(RSVP_CONFIG.summarySheetName) || ensureSummarySheet_(ss);
+  const lastRow = rsvp.getLastRow();
+
+  let total = 0;
+  let attending = 0;
+  let notAttending = 0;
+  let expectedGuests = 0;
+  let groomSide = 0;
+  let brideSide = 0;
+  let bothSide = 0;
+
+  if (lastRow >= 2) {
+    // F:H = Khách của, Trạng thái, Số người
+    const rows = rsvp.getRange(2, 6, lastRow - 1, 3).getValues();
+    rows.forEach(row => {
+      const relation = String(row[0] || '').trim();
+      const status = String(row[1] || '').trim();
+      const guests = Number(row[2]) || 0;
+
+      // Một dòng RSVP hợp lệ luôn có quan hệ/trạng thái do doPost ghi vào.
+      if (!relation && !status) return;
+      total++;
+
+      if (status === 'Có tham dự') attending++;
+      if (status === 'Không tham dự') notAttending++;
+      expectedGuests += guests;
+
+      if (relation === 'Nhà trai / Chú rể') groomSide++;
+      if (relation === 'Nhà gái / Cô dâu') brideSide++;
+      if (relation === 'Bạn chung của hai bạn') bothSide++;
+    });
+  }
+
+  summary.getRange(2, 2, 7, 1).setValues([
+    [total],
+    [attending],
+    [notAttending],
+    [expectedGuests],
+    [groomSide],
+    [brideSide],
+    [bothSide]
+  ]);
 }
 
 function relationLabel_(value) {
@@ -272,7 +323,24 @@ function safeCell_(value, maxLength) {
 
 function htmlResult_(obj) {
   const payload = JSON.stringify({ type: 'wedding-rsvp-result', ...obj }).replace(/</g, '\\u003c');
-  const html = `<!doctype html><html><head><meta charset="utf-8"></head><body><script>window.parent.postMessage(${payload}, '*');<\/script></body></html>`;
+  const html = `<!doctype html>
+<html>
+<head><meta charset="utf-8"></head>
+<body>
+<script>
+(function () {
+  var message = ${payload};
+  function sendAck() {
+    try { window.parent.postMessage(message, '*'); } catch (e) {}
+    try { window.top.postMessage(message, '*'); } catch (e) {}
+  }
+  sendAck();
+  setTimeout(sendAck, 250);
+  setTimeout(sendAck, 1000);
+})();
+<\/script>
+</body>
+</html>`;
   return HtmlService
     .createHtmlOutput(html)
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);

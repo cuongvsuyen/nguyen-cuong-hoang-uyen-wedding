@@ -781,65 +781,161 @@
   $$('input[name="attendance"]', rsvpForm).forEach(input => input.addEventListener('change', updateRsvpGuestField));
 
   function submitRsvpToGoogle(endpoint, fields) {
-    return new Promise((resolve, reject) => {
-      const requestId = `rsvp-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-      const frameName = `rsvpFrame_${Date.now()}_${Math.random().toString(16).slice(2)}`;
-      const iframe = document.createElement('iframe');
-      const form = document.createElement('form');
-      let settled = false;
+  return new Promise((resolve, reject) => {
+    const requestId =
+      `rsvp-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-      iframe.name = frameName;
-      iframe.hidden = true;
-      iframe.setAttribute('aria-hidden', 'true');
-      iframe.style.display = 'none';
+    const frameName =
+      `rsvpFrame_${Date.now()}_${Math.random().toString(16).slice(2)}`;
 
-      form.method = 'POST';
-      form.action = endpoint;
-      form.target = frameName;
-      form.style.display = 'none';
+    const iframe = document.createElement('iframe');
+    const form = document.createElement('form');
 
-      const payload = { ...fields, requestId };
-      Object.entries(payload).forEach(([name, value]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = String(value ?? '');
-        form.appendChild(input);
-      });
+    let settled = false;
+    let phase = 'boot';
+    let fallbackTimer = null;
 
-      const cleanup = () => {
-        window.removeEventListener('message', onMessage);
-        clearTimeout(timer);
-        form.remove();
-        setTimeout(() => iframe.remove(), 0);
-      };
+    iframe.name = frameName;
+    iframe.src = 'about:blank';
+    iframe.hidden = true;
+    iframe.setAttribute('aria-hidden', 'true');
+    iframe.style.display = 'none';
 
-      const finish = (fn, value) => {
-        if (settled) return;
-        settled = true;
-        cleanup();
-        fn(value);
-      };
+    form.method = 'POST';
+    form.action = endpoint;
+    form.target = frameName;
+    form.style.display = 'none';
 
-      const onMessage = event => {
-        const trustedOrigin = event.origin === 'https://script.google.com' || event.origin === 'https://script.googleusercontent.com';
-        if (!trustedOrigin) return;
-        const data = event.data;
-        if (!data || data.type !== 'wedding-rsvp-result' || data.requestId !== requestId) return;
-        if (data.ok) finish(resolve, data);
-        else finish(reject, new Error(data.error || 'Google Sheet không thể lưu RSVP'));
-      };
+    const payload = {
+      ...fields,
+      requestId
+    };
 
-      const timer = setTimeout(() => {
-        finish(reject, new Error('Hết thời gian chờ phản hồi từ Google Apps Script'));
-      }, 12000);
+    Object.entries(payload).forEach(([name, value]) => {
+      const input = document.createElement('input');
 
-      window.addEventListener('message', onMessage);
-      document.body.appendChild(iframe);
-      document.body.appendChild(form);
-      form.submit();
+      input.type = 'hidden';
+      input.name = name;
+      input.value = String(value ?? '');
+
+      form.appendChild(input);
     });
-  }
+
+    const cleanup = () => {
+      window.removeEventListener('message', onMessage);
+
+      clearTimeout(timeoutTimer);
+      clearTimeout(fallbackTimer);
+
+      form.remove();
+
+      setTimeout(() => {
+        iframe.remove();
+      }, 0);
+    };
+
+    const finish = (fn, value) => {
+      if (settled) return;
+
+      settled = true;
+      cleanup();
+
+      fn(value);
+    };
+
+    const onMessage = event => {
+      const data = event.data;
+
+      /*
+       * QUAN TRỌNG:
+       *
+       * Không kiểm tra:
+       *
+       * event.source === iframe.contentWindow
+       *
+       * Vì Google Apps Script HtmlService có thể chạy
+       * response trong iframe sandbox lồng bên trong.
+       *
+       * requestId đã đủ để xác nhận đúng request.
+       */
+      if (
+        !data ||
+        data.type !== 'wedding-rsvp-result' ||
+        data.requestId !== requestId
+      ) {
+        return;
+      }
+
+      if (data.ok) {
+        finish(resolve, {
+          ...data,
+          confirmed: true
+        });
+      } else {
+        finish(
+          reject,
+          new Error(
+            data.error ||
+            'Google Sheet không thể lưu RSVP'
+          )
+        );
+      }
+    };
+
+    /*
+     * Iframe load lần 1:
+     * about:blank
+     *
+     * Sau đó mới submit.
+     *
+     * Iframe load lần 2:
+     * Apps Script đã trả response.
+     */
+    iframe.addEventListener('load', () => {
+      if (phase === 'boot') {
+        phase = 'submitted';
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        return;
+      }
+
+      if (phase === 'submitted') {
+        phase = 'response-loaded';
+
+        /*
+         * Chờ ACK postMessage thêm 1.2 giây.
+         *
+         * Nếu Google sandbox chặn ACK nhưng response
+         * đã load thì không báo "chưa gửi" sai nữa.
+         */
+        fallbackTimer = setTimeout(() => {
+          finish(resolve, {
+            ok: true,
+            requestId,
+            confirmed: false,
+            fallback: 'iframe-response-loaded'
+          });
+        }, 1200);
+      }
+    });
+
+    const timeoutTimer = setTimeout(() => {
+      finish(
+        reject,
+        new Error(
+          'Hết thời gian chờ phản hồi từ Google Apps Script'
+        )
+      );
+    }, 30000);
+
+    window.addEventListener('message', onMessage);
+
+    document.body.appendChild(iframe);
+  });
+}
 
   rsvpForm.addEventListener('submit', async event => {
     event.preventDefault();
