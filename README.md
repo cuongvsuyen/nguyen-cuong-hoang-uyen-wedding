@@ -1,4 +1,4 @@
-# Thiệp cưới Nguyễn Cường & Hoàng Uyên — Long Phụng V3
+# Thiệp cưới Nguyễn Cường & Hoàng Uyên
 
 Bản này đã đổi tên cô dâu/chú rể thành **Nguyễn Cường & Hoàng Uyên** và chạy hoàn toàn dạng **static site trên GitHub Pages**. Không cần `server.js`, không cần VPS.
 
