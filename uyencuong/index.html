@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#7A0014" />
+  <meta name="description" content="Thiệp cưới - Long Phụng V3 Đỏ." />
+  <title>Thiệp cưới</title>
+
+  <!-- HAR xác nhận template dùng EB Garamond + Lora; dùng Google Fonts để project chạy cross-origin mà không đóng gói font. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.chungdoi.com" crossorigin>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-gated">
+  <section class="gate" id="gate" aria-label="Phong bì thiệp cưới">
+    <div class="gate-particles" id="gateParticles" aria-hidden="true"></div>
+    <div class="gate-burst-layer" id="gateBurst" aria-hidden="true"></div>
+    <div class="gate-fly-layer" id="gateFlyLayer" aria-hidden="true"></div>
+    <div class="gate-card-wrap">
+      <div class="gate-card">
+        <img class="gate-phoenix" data-asset="phung" alt="" aria-hidden="true" />
+        <img class="gate-dragon" data-asset="rong" alt="" aria-hidden="true" />
+        <img class="gate-seal" data-asset="chuHy" alt="Hỷ" />
+
+        <div class="gate-content">
+          <h1 class="gate-couple">
+            <span data-name="groom-short"></span>
+            <small>&amp;</small>
+            <span data-name="bride-short"></span>
+          </h1>
+          <div class="gate-divider"><i></i><b>❦</b><i></i></div>
+          <p class="gate-date" data-config="gate-date"></p>
+          <p class="gate-invite">Thân Mời</p>
+          <button class="open-invite" id="openInvite" type="button"><span>Mở thiệp</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-shell is-visible" id="pageShell" aria-hidden="false">
+    <main class="invite-card" id="inviteCard">
+      <div class="decor-field" id="decorField" aria-hidden="true"></div>
+
+      <header class="invite-header">
+        <div class="short-names-row">
+          <span data-name="groom-upper"></span>
+          <img data-asset="chuHy" alt="Hỷ" />
+          <span data-name="bride-upper"></span>
+        </div>
+
+        <div class="hero-stage">
+          <img class="hero-bird hero-bird-left" data-asset="chimEn" alt="" aria-hidden="true" />
+          <img class="hero-bird hero-bird-right" data-asset="chimEn" alt="" aria-hidden="true" />
+          <svg class="hero-svg" viewBox="-7.5 0 754 1099" role="img" aria-label="Ảnh cưới">
+            <defs>
+              <clipPath id="heroFrameOuter">
+                <path d="M228.5,1055 C334.984,1055 441.468,1055.014 547.953,1054.954 C552.565,1054.951 557.299,1054.816 561.77,1053.818 C587.42,1048.092 605.609,1033.486 613.947,1008.096 C616.121,1001.475 616.769,994.353 618.145,987.324 C635.537,985.235 643.773,982.674 655.945,973.945 C673.843,961.11 683.913,943.592 683.924,921.395 C684.045,677.096 684.005,432.797 683.96,188.498 C683.959,184.385 683.56,180.244 683,176.163 C679.281,149.073 659.695,127.409 632.889,120.926 C627.506,119.624 621.924,119.145 616.263,118.259 C615.743,106.246 612.673,94.898 606.242,84.598 C593.381,63.998 574.69,52.259 550.521,52.178 C433.372,51.783 316.221,51.985 199.071,52.042 C192.958,52.045 186.798,52.289 180.739,53.048 C157.947,55.903 140.708,67.665 130.359,87.905 C125.447,97.514 123.518,108.648 120.074,119.613 C115.916,120.411 110.303,121.01 105.008,122.641 C99.7,124.276 94.421,126.447 89.63,129.241 C67.002,142.437 55.184,162.706 55.156,188.519 C54.894,431.151 54.993,673.784 55.05,916.416 C55.051,921.358 55.314,926.397 56.285,931.223 C59.49,947.166 66.483,961.038 79.179,971.747 C88.756,979.825 99.385,985.395 111.912,987.02 C115.34,987.465 119.765,986.747 121.912,988.635 C123.923,990.403 123.503,994.917 124.196,998.214 C124.365,999.018 124.792,999.769 124.943,1000.574 C130.73,1031.288 158.409,1054.584 190.006,1054.975 C202.502,1055.129 215.002,1055 228,1055 Z" />
+              </clipPath>
+              <clipPath id="heroClip">
+                <path d="M228.5,1055 C334.984,1055 441.468,1055.014 547.953,1054.954 C552.565,1054.951 557.299,1054.816 561.77,1053.818 C587.42,1048.092 605.609,1033.486 613.947,1008.096 C616.121,1001.475 616.769,994.353 618.145,987.324 C635.537,985.235 643.773,982.674 655.945,973.945 C673.843,961.11 683.913,943.592 683.924,921.395 C684.045,677.096 684.005,432.797 683.96,188.498 C683.959,184.385 683.56,180.244 683,176.163 C679.281,149.073 659.695,127.409 632.889,120.926 C627.506,119.624 621.924,119.145 616.263,118.259 C615.743,106.246 612.673,94.898 606.242,84.598 C593.381,63.998 574.69,52.259 550.521,52.178 C433.372,51.783 316.221,51.985 199.071,52.042 C192.958,52.045 186.798,52.289 180.739,53.048 C157.947,55.903 140.708,67.665 130.359,87.905 C125.447,97.514 123.518,108.648 120.074,119.613 C115.916,120.411 110.303,121.01 105.008,122.641 C99.7,124.276 94.421,126.447 89.63,129.241 C67.002,142.437 55.184,162.706 55.156,188.519 C54.894,431.151 54.993,673.784 55.05,916.416 C55.051,921.358 55.314,926.397 56.285,931.223 C59.49,947.166 66.483,961.038 79.179,971.747 C88.756,979.825 99.385,985.395 111.912,987.02 C115.34,987.465 119.765,986.747 121.912,988.635 C123.923,990.403 123.503,994.917 124.196,998.214 C124.365,999.018 124.792,999.769 124.943,1000.574 C130.73,1031.288 158.409,1054.584 190.006,1054.975 C202.502,1055.129 215.002,1055 228,1055 Z" transform="translate(369.5 553.5) scale(0.98091 0.98804) translate(-369.5 -553.5)" />
+              </clipPath>
+            </defs>
+            <image data-svg-asset="frame" x="0" y="0" width="754" height="1099" clip-path="url(#heroFrameOuter)" />
+            <image data-config-image="hero" x="0" y="0" width="754" height="1099" clip-path="url(#heroClip)" preserveAspectRatio="xMidYMid meet" />
+          </svg>
+        </div>
+      </header>
+
+      <section class="section ceremony-section reveal">
+        <h2 class="framed-title">THÔNG TIN LỄ CƯỚI</h2>
+
+        <div class="families">
+          <div class="family family-groom" data-family="groom">
+            <p class="family-title"></p>
+            <p class="parents"><strong class="family-father"></strong><br><strong class="family-mother"></strong></p>
+            <i class="family-rule"></i>
+            <a class="family-address family-map-link" target="_blank" rel="noopener"></a>
+          </div>
+          <span class="family-divider" aria-hidden="true"></span>
+          <div class="family family-bride" data-family="bride">
+            <p class="family-title"></p>
+            <p class="parents"><strong class="family-father"></strong><br><strong class="family-mother"></strong></p>
+            <i class="family-rule"></i>
+            <a class="family-address family-map-link" target="_blank" rel="noopener"></a>
+          </div>
+        </div>
+
+        <div class="announcement">
+          <p data-config="announcement-line1"></p>
+          <p data-config="announcement-line2"></p>
+        </div>
+
+        <div class="formal-couple">
+          <div><strong data-name="groom-full"></strong><small data-config="groom-birth-order"></small></div>
+          <span>&amp;</span>
+          <div><strong data-name="bride-full"></strong><small data-config="bride-birth-order"></small></div>
+        </div>
+
+        <div class="ceremony-time">
+          <p class="ceremony-header" data-config="ceremony-header"></p>
+          <p class="at-time" data-config="ceremony-time"></p>
+          <div class="date-row">
+            <span class="date-part" data-config="ceremony-weekday"></span>
+            <i></i>
+            <strong data-config="ceremony-day"></strong>
+            <i></i>
+            <span class="date-part" data-config="ceremony-month"></span>
+          </div>
+          <p class="year" data-config="ceremony-year"></p>
+          <p class="lunar" data-config="ceremony-lunar"></p>
+        </div>
+      </section>
+
+      <section class="section gallery-section reveal">
+        <h2 class="framed-title">ALBUM ẢNH</h2>
+        <div class="gallery-carousel" id="galleryCarousel" aria-label="Album ảnh cưới"></div>
+      </section>
+
+      <section class="section reception-section reveal">
+        <h2 class="framed-title">THÔNG TIN TIỆC CƯỚI</h2>
+        <div class="party-info">
+          <p class="party-label" data-config="party-label"></p>
+          <strong class="party-time" data-config="banquet-time"></strong>
+          <div class="date-row party-date-row">
+            <span class="date-part" data-config="reception-weekday"></span><i></i><strong data-config="reception-day"></strong><i></i><span class="date-part" data-config="reception-month"></span>
+          </div>
+          <p class="lunar" data-config="reception-lunar"></p>
+          <div class="guest-times">
+            <div><small>ĐÓN KHÁCH</small><strong data-config="guest-reception-time"></strong></div>
+            <div><small>KHAI TIỆC</small><strong data-config="banquet-time"></strong></div>
+          </div>
+          <p class="countdown-title">CÙNG ĐẾM NGƯỢC</p>
+          <div class="countdown" id="countdown">
+            <div><strong data-unit="days">00</strong><small>NGÀY</small></div>
+            <div><strong data-unit="hours">00</strong><small>GIỜ</small></div>
+            <div><strong data-unit="minutes">00</strong><small>PHÚT</small></div>
+            <div><strong data-unit="seconds">00</strong><small>GIÂY</small></div>
+          </div>
+          <button class="text-button" id="addCalendar" type="button">Thêm vào lịch</button>
+        </div>
+
+        <div class="mini-calendar">
+          <div class="calendar-inner">
+            <div class="calendar-month" data-config="calendar-month"></div>
+            <div class="calendar-week"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span></div>
+            <div class="calendar-days" id="calendarDays"></div>
+          </div>
+        </div>
+        <button class="outline-button" id="openRsvp" type="button">XÁC NHẬN THAM DỰ</button>
+      </section>
+
+      <section class="section venue-section reveal">
+        <h2 class="framed-title">ĐỊA ĐIỂM TIỆC CƯỚI</h2>
+        <p class="venue-prefix" data-config="venue-prefix"></p>
+        <p class="venue-address" data-config="venue"></p>
+        <div class="map-frame">
+          <iframe id="venueMap" title="Bản đồ địa điểm" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <a class="outline-button directions" id="venueDirections" target="_blank" rel="noopener">CHỈ ĐƯỜNG</a>
+      </section>
+
+      <!-- <section class="section dresscode-section reveal">
+        <h2 class="plain-title" data-config="dress-title"></h2>
+        <p class="dress-subtitle" data-config="dress-subtitle"></p>
+        <div class="dress-colors" id="dressColors" aria-label="Màu trang phục"></div>
+      </section> -->
+
+      <section class="section timeline-section reveal">
+        <img class="timeline-bird bird-one" data-asset="chimEn" alt="" aria-hidden="true" />
+        <img class="timeline-bird bird-two" data-asset="chimEn" alt="" aria-hidden="true" />
+        <h2 class="plain-title">LỊCH TRÌNH NGÀY CƯỚI</h2>
+        <div class="timeline" id="timeline"></div>
+      </section>
+
+      <section class="section rsvp-section reveal" id="rsvpSection">
+        <div class="rsvp-ornament" aria-hidden="true">❦</div>
+        <h2 class="framed-title">XÁC NHẬN THAM DỰ</h2>
+        <p class="rsvp-intro">Sự hiện diện của bạn là niềm vui và vinh hạnh của chúng mình. Hãy dành một chút thời gian xác nhận để gia đình chuẩn bị đón tiếp chu đáo nhất nhé!</p>
+        <form class="rsvp-inline-form" id="rsvpForm">
+          <div class="rsvp-honeypot" aria-hidden="true">
+            <label for="rsvpWebsite">Website</label>
+            <input id="rsvpWebsite" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <div class="rsvp-field rsvp-field-full">
+            <label for="rsvpName">Họ và tên <span>*</span></label>
+            <input id="rsvpName" name="name" maxlength="80" autocomplete="name" placeholder="Nhập họ và tên của bạn" required />
+          </div>
+          <div class="rsvp-field">
+            <label for="rsvpPhone">Số điện thoại</label>
+            <input id="rsvpPhone" name="phone" maxlength="30" inputmode="tel" autocomplete="tel" placeholder="Ví dụ: 0912 345 678" />
+          </div>
+          <div class="rsvp-field">
+            <label for="rsvpRelation">Bạn là khách của</label>
+            <select id="rsvpRelation" name="relation">
+              <option value="groom">Nhà trai / Chú rể</option>
+              <option value="bride">Nhà gái / Cô dâu</option>
+              <option value="both">Bạn chung của hai bạn</option>
+              <option value="family">Người thân gia đình</option>
+              <option value="other">Khác</option>
+            </select>
+          </div>
+          <div class="rsvp-field rsvp-field-full">
+            <span class="rsvp-label">Bạn có thể tham dự không? <b>*</b></span>
+            <div class="rsvp-choice-grid">
+              <label class="rsvp-choice">
+                <input type="radio" name="attendance" value="yes" checked />
+                <span><b>♥</b><strong>Mình sẽ tham dự</strong><small>Hẹn gặp hai bạn trong ngày vui!</small></span>
+              </label>
+              <label class="rsvp-choice">
+                <input type="radio" name="attendance" value="no" />
+                <span><b>♡</b><strong>Rất tiếc, mình không thể</strong><small>Gửi lời chúc tốt đẹp đến hai bạn.</small></span>
+              </label>
+            </div>
+          </div>
+          <div class="rsvp-field" id="rsvpGuestsField">
+            <label for="rsvpGuests">Số người tham dự</label>
+            <select id="rsvpGuests" name="guests">
+              <option value="1">1 người</option>
+              <option value="2">2 người</option>
+              <option value="3">3 người</option>
+              <option value="4">4 người</option>
+              <option value="5">5 người</option>
+            </select>
+          </div>
+          <div class="rsvp-field">
+            <label for="rsvpDiet">Lưu ý về món ăn</label>
+            <input id="rsvpDiet" name="diet" maxlength="120" placeholder="Ăn chay, dị ứng... (nếu có)" />
+          </div>
+          <div class="rsvp-field rsvp-field-full">
+            <label for="rsvpMessage">Lời nhắn đến cô dâu &amp; chú rể</label>
+            <textarea id="rsvpMessage" name="message" maxlength="500" rows="4" placeholder="Viết một lời nhắn nhỏ..."></textarea>
+          </div>
+          <button class="rsvp-submit" id="rsvpSubmit" type="submit">
+            <span class="rsvp-submit-text">GỬI XÁC NHẬN</span>
+            <span class="rsvp-submit-loading" aria-hidden="true">ĐANG GỬI...</span>
+          </button>
+          <p class="rsvp-status" id="rsvpStatusMessage" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="section guestbook-section reveal">
+        <h2 class="plain-title">SỔ LƯU BÚT</h2>
+        <form class="guestbook-form" id="guestbookForm">
+          <input id="guestName" maxlength="50" placeholder="Nhập tên của bạn*" required />
+          <textarea id="guestWish" maxlength="400" rows="4" placeholder="Nhập lời chúc của bạn*" required></textarea>
+          <button class="submit-wish" type="submit">GỬI LỜI CHÚC</button>
+        </form>
+        <div class="comments" id="comments"></div>
+      </section>
+
+      <section class="section gift-section reveal">
+        <h2 class="plain-title">HỘP QUÀ MỪNG</h2>
+        <button class="gift-envelope" id="giftBox" type="button" aria-label="Mở hộp quà mừng">
+          <span class="gift-sparkle gift-sparkle-1">✦</span>
+          <span class="gift-sparkle gift-sparkle-2">✦</span>
+          <span class="gift-sparkle gift-sparkle-3">✦</span>
+          <span class="gift-sparkle gift-sparkle-4">✦</span>
+          <span class="gift-envelope-stage">
+            <span class="gift-envelope-shadow"></span>
+            <img class="gift-envelope-back" data-asset="giftEnvelope" alt="" aria-hidden="true" />
+            <img class="gift-envelope-main" data-asset="giftEnvelope" alt="" aria-hidden="true" />
+          </span>
+          <span class="gift-envelope-hint">Nhấn để mở</span>
+        </button>
+      </section>
+
+      <footer class="footer reveal">
+        <p data-config="thank-you"></p>
+        <div class="heart-pair"><span data-name="groom-short"></span><b>♥</b><span data-name="bride-short"></span></div>
+      </footer>
+    </main>
+  </div>
+
+  <button class="music-toggle" id="musicToggle" type="button" aria-label="Bật hoặc tắt nhạc"><span class="music-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>
+  <audio id="music" preload="metadata"></audio>
+
+  <div class="modal" id="galleryModal" aria-hidden="true">
+    <button class="modal-close" data-close="galleryModal" aria-label="Đóng">×</button>
+    <button class="gallery-nav prev" id="galleryPrev" aria-label="Ảnh trước">‹</button>
+    <img class="gallery-large" id="galleryLarge" alt="Ảnh cưới phóng to" />
+    <button class="gallery-nav next" id="galleryNext" aria-label="Ảnh sau">›</button>
+    <div class="gallery-counter" id="galleryCounter"></div>
+  </div>
+
+  <div class="modal gift-modal" id="giftModal" aria-hidden="true">
+    <div class="gift-sheet" role="dialog" aria-modal="true" aria-labelledby="giftModalTitle">
+      <header class="gift-sheet-header">
+        <h2 id="giftModalTitle">HỘP QUÀ MỪNG</h2>
+        <button class="gift-sheet-close" data-close="giftModal" aria-label="Đóng">×</button>
+      </header>
+      <div class="gift-sheet-body">
+        <div class="bank-grid" id="bankGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
