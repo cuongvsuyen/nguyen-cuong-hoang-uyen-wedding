@@ -138,9 +138,9 @@ window.WEDDING_CONFIG = {
     {
       role: 'Cô dâu',
       bank: 'Vietinbank',
-      account: '099996586',
+      account: '102873523921',
       name: 'HOANG THI UYEN',
-      qr: 'assets/qr/bride.png'
+      qr: 'assets/qr/uyen.jpg'
     }
   ],
 
