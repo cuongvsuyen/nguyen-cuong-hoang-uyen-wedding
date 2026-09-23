@@ -22,6 +22,7 @@ window.WEDDING_CONFIG = {
   /* ================= GIA ĐÌNH ================= */
   families: {
     groom: {
+      sideTitle: 'NHÀ TRAI',
       parentTitle: 'Ông Bà',
       father: 'Nguyễn Văn Thường',
       mother: 'Lê Thị Tâm',
@@ -30,6 +31,7 @@ window.WEDDING_CONFIG = {
       mapUrl: 'https://www.google.com/maps/search/?api=1&query=45+Pho+Hue+Hai+Ba+Trung+Ha+Noi'
     },
     bride: {
+      sideTitle: 'NHÀ GÁI',
       parentTitle: 'Ông Bà',
       father: 'Hoàng Văn Qúy',
       mother: 'Đinh Thị Hiền',

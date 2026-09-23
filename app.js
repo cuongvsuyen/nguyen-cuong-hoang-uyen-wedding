@@ -80,6 +80,7 @@
       const family = cfg.families?.[side] || {};
       const root = $(`[data-family="${side}"]`);
       if (!root) return;
+      $('.family-side-title', root).textContent = family.sideTitle || '';
       $('.family-title', root).textContent = family.parentTitle || '';
       $('.family-father', root).textContent = family.father || '';
       $('.family-mother', root).textContent = family.mother || '';
