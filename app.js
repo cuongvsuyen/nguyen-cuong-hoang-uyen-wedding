@@ -129,19 +129,19 @@
     const directions = $('#venueDirections');
     if (directions) directions.href = cfg.reception?.directionsUrl || '#';
 
-    // Dress code
-    setText('[data-config="dress-title"]', cfg.dresscode?.title || 'DRESS CODE');
-    setText('[data-config="dress-subtitle"]', cfg.dresscode?.subtitle || '');
-    setText('[data-config="thank-you"]', cfg.thankYou || '');
-    const dressRoot = $('#dressColors');
-    if (dressRoot) {
-      dressRoot.innerHTML = '';
-      (cfg.dresscode?.colors || []).forEach(color => {
-        const swatch = document.createElement('span');
-        swatch.style.setProperty('--swatch', color);
-        dressRoot.appendChild(swatch);
-      });
-    }
+    // // Dress code
+    // setText('[data-config="dress-title"]', cfg.dresscode?.title || 'DRESS CODE');
+    // setText('[data-config="dress-subtitle"]', cfg.dresscode?.subtitle || '');
+    // setText('[data-config="thank-you"]', cfg.thankYou || '');
+    // const dressRoot = $('#dressColors');
+    // if (dressRoot) {
+    //   dressRoot.innerHTML = '';
+    //   (cfg.dresscode?.colors || []).forEach(color => {
+    //     const swatch = document.createElement('span');
+    //     swatch.style.setProperty('--swatch', color);
+    //     dressRoot.appendChild(swatch);
+    //   });
+    // }
 
     // Music URL
     if (music && cfg.music?.url) music.src = cfg.music.url;

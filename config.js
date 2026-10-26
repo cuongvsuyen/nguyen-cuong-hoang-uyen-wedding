@@ -47,16 +47,16 @@ window.WEDDING_CONFIG = {
 
   /* ================= LỄ THÀNH HÔN ================= */
   ceremony: {
-    date: '2026-11-13',
-    time: '09:00',
+    date: '2026-11-15',
+    time: '10:30',
     header: 'LỄ THÀNH HÔN ĐƯỢC CỬ HÀNH TẠI\nTƯ GIA NHÀ TRAI',
     lunar: 'Tức ngày 07 tháng 10 năm Bính Ngọ'
   },
 
   /* ================= TIỆC CƯỚI ================= */
   reception: {
-    date: '2026-11-13',
-    banquetTime: '11:00',
+    date: '2026-11-15',
+    banquetTime: '11:30',
     guestReceptionTime: '09:00',
     partyLabel: 'Tiệc cưới sẽ diễn ra vào lúc:',
     lunar: 'Tức ngày 07 tháng 10 năm Bính Ngọ',
